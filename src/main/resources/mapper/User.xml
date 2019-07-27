@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mapper.UserMapper">
+
+    <resultMap type="User" id="userResultMap">
+        <!-- 定义主键 ,非常重要。如果是多个字段,则定义多个id -->
+        <!-- property：主键在pojo中的属性名 -->
+        <!-- column：主键在数据库中的列名 -->
+        <id property="id" column="id"/>
+        <!-- 定义普通属性 -->
+        <result property="createAt" column="create_at"/>
+        <result property="updateAt" column="update_at"/>
+        <result property="name" column="name"/>
+        <result property="qq" column="qq"/>
+        <result property="job" column="job"/>
+        <result property="startTime" column="start_time"/>
+        <result property="college" column="college"/>
+        <result property="number" column="number"/>
+        <result property="dailyUrl" column="daily_url"/>
+        <result property="wish" column="wish"/>
+        <result property="brother" column="brother"/>
+        <result property="referee" column="referee"/>
+        <result property="city" column="city"/>
+        <result property="review" column="review"/>
+    </resultMap>
+
+    <!--增加-->
+    <!--<insert id="add" parameterType="User">-->
+    <insert id="add" parameterType="User">
+ insert into stu(create_at,update_at,name,qq,job,college,number,daily_url,wish,brother,referee,city,review)
+             values(#{createAt},#{updateAt},#{name},#{qq},#{job},#{college},#{number},#{dailyUrl},#{wish},#{brother},#{referee},#{city},#{review})
+	 </insert>
+
+    <!--删除-->
+    <delete id="deleteById" parameterType="User">
+	        delete from stu where id= #{id}
+	    </delete>
+    <!--根据ID查询-->
+    <select id="selectById" parameterType="Long" resultType="User">
+	        select * from  stu  where id= #{id}
+	    </select>
+    <!--更新-->
+    <update id="updateById" parameterType="User">
+	   update stu set name=#{name},qq=#{qq},job=#{job},college=#{college},number=#{number},daily_url=#{dailyUrl},wish=#{wish},brother=#{brother},referee=#{referee},city=#{city},review=#{review} where id=#{id}
+	    </update>
+    <!--查询全表-->
+    <select id="list" resultType="User" resultMap="userResultMap">
+        select * from stu
+        <if test="start!=null and count!=null">
+            limit #{start},#{count}
+        </if>
+    </select>
+    <!--分页-->
+    <select id="total" resultType="int">
+	        select count(*) from   stu
+	</select>
+    <!--模糊查询-->
+    <select id="selectByName" parameterType="string" resultType="User" resultMap="userResultMap">
+            SELECT * FROM stu WHERE name LIKE '%${name}%'
+    </select>
+</mapper>
+
